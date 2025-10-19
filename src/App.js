@@ -13,7 +13,7 @@ class App {
     let nums = input;
 
     // 커스텀 구분자
-    const customDelimiter = input.match(/^\/\/(.)\n/);
+    const customDelimiter = input.match(/^\/\/(.)\\n/);
     if(customDelimiter){
       delimiter = new RegExp(customDelimiter[1]);
       nums = input.split('\\n')[1];
