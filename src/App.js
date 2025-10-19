@@ -3,7 +3,13 @@ import { Console } from '@woowacourse/mission-utils';
 class App {
   async run() {
     const input = await Console.readLineAsync('덧셈할 문자열을 입력해 주세요.\n');
-    Console.print(input);
+    const result = this.handleString(input);
+    Console.print(`결과 : ${result}`);
+  }
+
+  handleString(input) {
+    const { nums, delimiter } = this.checkDelimiter(input);
+    return this.separateAndSum(nums, delimiter);
   }
 
   // 구분자 탐색 함수
@@ -11,7 +17,6 @@ class App {
     // 기본 구분자
     let delimiter = /,|:/;
     let nums = input;
-
     // 커스텀 구분자
     const customDelimiter = input.match(/^\/\/(.)\\n/);
     if(customDelimiter){
@@ -19,6 +24,13 @@ class App {
       nums = input.split('\\n')[1];
     };
     return {nums, delimiter};
+  }
+
+  // 문자열 분리 및 합 계산 함수
+  separateAndSum(input, delimiter){
+    const numbers = input.split(delimiter).map(Number);
+    const sum = numbers.reduce((a, b) => a + b, 0);
+    return sum;
   }
 }
 
