@@ -18,8 +18,11 @@ class App {
     let delimiter = /,|:/;
     let nums = input;
     // 커스텀 구분자
-    const customDelimiter = input.match(/^\/\/(.)\\n/);
-    if(customDelimiter){
+    if (input.startsWith('//')) {
+      const customDelimiter = input.match(/^\/\/(.)\\n/);
+      if (!customDelimiter) {
+        throw new Error("[ERROR] 잘못된 커스텀 구분자 형식입니다.");
+      }
       delimiter = new RegExp(customDelimiter[1]);
       nums = input.split('\\n')[1];
     };
@@ -29,6 +32,12 @@ class App {
   // 문자열 분리 및 합 계산 함수
   separateAndSum(input, delimiter){
     const numbers = input.split(delimiter).map(Number);
+    const isNegative = numbers.some(num => num < 0);
+    if (isNegative) throw new Error("[ERROR] 음수는 입력할 수 없습니다.");
+
+    const hasInvalidNumber = numbers.some(num => isNaN(num));
+    if (hasInvalidNumber) throw new Error("[ERROR] 숫자가 아닌 값이 포함되어 있습니다.");
+
     const sum = numbers.reduce((a, b) => a + b, 0);
     return sum;
   }
